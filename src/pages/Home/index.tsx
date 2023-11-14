@@ -8,6 +8,7 @@ export default function Home() {
   const [history, setHistory] = useState('')
   const [operator, setOperator] = useState('')
   const [isLog, setIsLog] = useState(false)
+  console.log(history)
 
   return (
     <View style={styles.container}>
@@ -118,7 +119,11 @@ export default function Home() {
                 if (number1.length > 0) {
                   setOperator('+')
                   if (number.length <= 0) {
-                    if (history.match(/^[a-zA-Z0-9!@#\$%\^\&÷*\)\(+=._-]+$/g)) {
+                    if (
+                      history[history.length - 1].match(
+                        /^[ `!@#$%^&*()÷_+\-=\[\]{};':"\\|,.<>\/?~]+$/g
+                      )
+                    ) {
                       setHistory(history.slice(0, -1) + '+')
                     } else {
                       setHistory(history + '+')
@@ -154,7 +159,11 @@ export default function Home() {
                 if (number1.length > 0) {
                   setOperator('-')
                   if (number.length <= 0) {
-                    if (history.match(/^[a-zA-Z0-9!@#\$%\^\&÷*\)\(+=._-]+$/g)) {
+                    if (
+                      history
+                        .slice(-1)
+                        .match(/^[ `!@#$%^&*()÷_+\-=\[\]{};':"\\|,.<>\/?~]+$/g)
+                    ) {
                       setHistory(history.slice(0, -1) + '-')
                     } else {
                       setHistory(history + '-')
@@ -193,7 +202,11 @@ export default function Home() {
                   setOperator('*')
 
                   if (number.length <= 0) {
-                    if (history.match(/^[a-zA-Z0-9!@#\$%\^\&÷*\)\(+=._-]+$/g)) {
+                    if (
+                      history[history.length - 1].match(
+                        /^[ `!@#$%^&*()÷_+\-=\[\]{};':"\\|,.<>\/?~]+$/g
+                      )
+                    ) {
                       setHistory(history.slice(0, -1) + '*')
                     } else {
                       setHistory(history + '*')
@@ -231,7 +244,11 @@ export default function Home() {
                   setOperator('÷')
 
                   if (number.length <= 0) {
-                    if (history.match(/[!@#$%^÷&*(),.?":{}|<>]/g)) {
+                    if (
+                      history[history.length - 1].match(
+                        /^[ `!@#$%^&*()÷_+\-=\[\]{};':"\\|,.<>\/?~]+$/g
+                      )
+                    ) {
                       setHistory(history.slice(0, -1) + '÷')
                     } else {
                       setHistory(history + '÷')
@@ -267,7 +284,11 @@ export default function Home() {
                   setOperator('^')
 
                   if (number.length <= 0) {
-                    if (history.match(/^[a-zA-Z0-9!@#\$%\^\&÷*\)\(+=._-]+$/g)) {
+                    if (
+                      history[history.length - 1].match(
+                        /^[ `!@#$%^&*()÷_+\-=\[\]{};':"\\|,.<>\/?~]+$/g
+                      )
+                    ) {
                       setHistory(history.slice(0, -1) + '^')
                     } else {
                       setHistory(history + '^')
@@ -302,7 +323,11 @@ export default function Home() {
               onPress={() => {
                 if (number1.length > 0) {
                   if (number.length <= 0) {
-                    if (history.match(/^[a-zA-Z0-9!@#\$%\^\&÷*\)\(+=._-]+$/g)) {
+                    if (
+                      history[history.length - 1].match(
+                        /^[ `!@#$%^&*()÷_+\-=\[\]{};':"\\|,.<>\/?~]+$/g
+                      )
+                    ) {
                       setHistory(history.slice(0, -1) + '%')
                     } else {
                       setHistory(history + '%')
