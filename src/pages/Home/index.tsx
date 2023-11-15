@@ -2,16 +2,17 @@ import React, { useState } from 'react'
 import { Pressable, Text, View } from 'react-native'
 import styles from './styles'
 import { Feather } from '@expo/vector-icons'
+import { StatusBar } from 'expo-status-bar'
 export default function Home() {
   const [number, setNumber] = useState('')
   const [number1, setNumber1] = useState('')
   const [history, setHistory] = useState('')
   const [operator, setOperator] = useState('')
   const [isLog, setIsLog] = useState(false)
-  console.log(history)
 
   return (
     <View style={styles.container}>
+      <StatusBar style="dark" />
       <Text style={styles.text}>Calculadora</Text>
       <View style={styles.title}>
         <Text style={{ color: 'white' }}>
@@ -131,7 +132,7 @@ export default function Home() {
                   } else {
                     const teste = parseFloat(number1) + parseFloat(number)
                     setNumber1(teste.toString())
-                    setHistory(teste.toFixed(2).toString() + '+')
+                    setHistory(teste.toString() + '+')
                     setNumber('')
                   }
                 } else {
@@ -172,9 +173,7 @@ export default function Home() {
                   } else {
                     const teste = parseFloat(number1) - parseFloat(number)
                     const newNumber = Math.log2(parseFloat(number))
-                    setHistory(
-                      isLog ? newNumber.toString() + '-' : number + '-'
-                    )
+                    setHistory(isLog ? newNumber.toString() + '-' : teste + '-')
                     setNumber1(teste.toString())
                     setNumber('')
                   }
@@ -215,7 +214,7 @@ export default function Home() {
                   } else {
                     const teste = parseFloat(number1) * parseFloat(number)
                     setNumber1(teste.toString())
-                    setHistory(teste.toFixed(2).toString() + '*')
+                    setHistory(teste.toString() + '*')
                     setNumber('')
                   }
                 } else {
@@ -242,7 +241,6 @@ export default function Home() {
               onPress={() => {
                 if (number1.length > 0) {
                   setOperator('÷')
-
                   if (number.length <= 0) {
                     if (
                       history[history.length - 1].match(
@@ -257,7 +255,7 @@ export default function Home() {
                   } else {
                     const teste = parseFloat(number1) / parseFloat(number)
                     setNumber1(teste.toString())
-                    setHistory(teste.toFixed(2).toString() + '÷')
+                    setHistory(teste.toString() + '÷')
                     setNumber('')
                   }
                 } else {
@@ -275,7 +273,7 @@ export default function Home() {
                 }
               }}
             >
-              <Text style={{ color: 'white' }}>/</Text>
+              <Text style={{ color: 'white' }}>÷</Text>
             </Pressable>
             <Pressable
               style={styles.padOperatorLeft}
@@ -297,21 +295,22 @@ export default function Home() {
                   } else {
                     const teste = parseFloat(number1) ** parseFloat(number)
                     setNumber1(teste.toString())
-                    setHistory(teste.toFixed(2).toString() + '^')
+                    setHistory(teste.toString() + '^')
                     setNumber('')
                   }
-                }
-                const newNumber = Math.log2(parseFloat(number))
-                if (isLog) {
-                  setHistory(newNumber + '^')
-                  setNumber1(newNumber.toString())
                 } else {
-                  setHistory(number + '^')
-                  setNumber1(number)
+                  const newNumber = Math.log2(parseFloat(number))
+                  if (isLog) {
+                    setHistory(newNumber + '^')
+                    setNumber1(newNumber.toString())
+                  } else {
+                    setHistory(number + '^')
+                    setNumber1(number)
+                  }
+                  setNumber('')
+                  setOperator('^')
+                  setIsLog(false)
                 }
-                setNumber('')
-                setOperator('^')
-                setIsLog(false)
               }}
             >
               <Text style={{ color: 'white' }}>^</Text>
@@ -333,10 +332,47 @@ export default function Home() {
                       setHistory(history + '%')
                     }
                   } else {
-                    const teste =
+                    const porcentagem =
                       (parseFloat(number1) * parseFloat(number)) / 100
-                    setNumber1(teste.toString())
-                    setHistory(teste.toFixed(2).toString())
+                    switch (operator) {
+                      case '+':
+                        setHistory(
+                          (porcentagem + parseFloat(number1)).toString()
+                        )
+                        setNumber1(
+                          (porcentagem + parseFloat(number1)).toString()
+                        )
+                        break
+                      case '*':
+                        setHistory(
+                          (porcentagem * parseFloat(number1)).toString()
+                        )
+                        setNumber1(
+                          (porcentagem * parseFloat(number1)).toString()
+                        )
+                        break
+                      case '-':
+                        setHistory(
+                          (porcentagem - parseFloat(number1)).toString()
+                        )
+                        setNumber1(
+                          (porcentagem - parseFloat(number1)).toString()
+                        )
+                        break
+                      case '/':
+                        setHistory(
+                          (porcentagem / parseFloat(number1)).toString()
+                        )
+                        break
+                      case '^':
+                        setHistory(
+                          (porcentagem ** parseFloat(number1)).toString()
+                        )
+                        setNumber1(
+                          (porcentagem ** parseFloat(number1)).toString()
+                        )
+                        break
+                    }
                     setNumber('')
                   }
                 } else {
@@ -351,6 +387,7 @@ export default function Home() {
               style={styles.padOperatorLeft}
               onPress={() => {
                 setIsLog(true)
+                setOperator('Log')
               }}
             >
               <Text style={{ color: 'white' }}>LOG2</Text>
@@ -363,41 +400,26 @@ export default function Home() {
                 if (number1.length > 0) {
                   switch (operator) {
                     case '+':
-                      setHistory(
-                        (Math.E + parseFloat(number1)).toFixed(2).toString()
-                      )
-                      setNumber1(
-                        (Math.E + parseFloat(number1)).toFixed(2).toString()
-                      )
+                      setHistory((Math.E + parseFloat(number1)).toString())
+                      setNumber1((Math.E + parseFloat(number1)).toString())
                       break
                     case '*':
-                      setHistory(
-                        (Math.E * parseFloat(number1)).toFixed(2).toString()
-                      )
-                      setNumber1(
-                        (Math.E * parseFloat(number1)).toFixed(2).toString()
-                      )
+                      setHistory((Math.E * parseFloat(number1)).toString())
+                      setNumber1((Math.E * parseFloat(number1)).toString())
                       break
                     case '-':
-                      setHistory(
-                        (Math.E - parseFloat(number1)).toFixed(2).toString()
-                      )
-                      setNumber1(
-                        (Math.E - parseFloat(number1)).toFixed(2).toString()
-                      )
+                      let newNumber = (parseFloat(number1) * Math.E).toString()
+                      setHistory(newNumber)
+                      setNumber1(newNumber)
                       break
-                    case '/':
-                      setHistory(
-                        (Math.E / parseFloat(number1)).toFixed(2).toString()
-                      )
+                    case '÷':
+                      newNumber = (parseFloat(number1) / Math.E).toString()
+                      setHistory(newNumber)
+                      setNumber1(newNumber)
                       break
                     case '^':
-                      setHistory(
-                        (Math.E ** parseFloat(number1)).toFixed(2).toString()
-                      )
-                      setNumber1(
-                        (Math.E ** parseFloat(number1)).toFixed(2).toString()
-                      )
+                      setHistory((Math.E ** parseFloat(number1)).toString())
+                      setNumber1((Math.E ** parseFloat(number1)).toString())
                       break
                     default:
                       setNumber1(Math.E.toString())
@@ -418,41 +440,28 @@ export default function Home() {
                 if (number1.length > 0) {
                   switch (operator) {
                     case '+':
-                      setHistory(
-                        (Math.PI + parseFloat(number1)).toFixed(2).toString()
-                      )
-                      setNumber1(
-                        (Math.PI + parseFloat(number1)).toFixed(2).toString()
-                      )
+                      let newNumber = parseFloat(number1) + Math.PI
+                      setHistory((Math.PI + parseFloat(number1)).toString())
+                      setNumber1((Math.PI + parseFloat(number1)).toString())
                       break
                     case '*':
-                      setHistory(
-                        (Math.PI * parseFloat(number1)).toFixed(2).toString()
-                      )
-                      setNumber1(
-                        (Math.PI * parseFloat(number1)).toFixed(2).toString()
-                      )
+                      newNumber = parseFloat(number1) * Math.PI
+                      setHistory((Math.PI * parseFloat(number1)).toString())
+                      setNumber1((Math.PI * parseFloat(number1)).toString())
                       break
                     case '-':
-                      setHistory(
-                        (Math.PI - parseFloat(number1)).toFixed(2).toString()
-                      )
-                      setNumber1(
-                        (Math.PI - parseFloat(number1)).toFixed(2).toString()
-                      )
+                      newNumber = parseFloat(number1) - Math.PI
+                      setHistory(newNumber.toString())
+                      setNumber1(newNumber.toString())
                       break
-                    case '/':
-                      setHistory(
-                        (Math.PI / parseFloat(number1)).toFixed(2).toString()
-                      )
+                    case '÷':
+                      newNumber = parseFloat(number1) / Math.PI
+                      setHistory(newNumber.toString())
                       break
                     case '^':
-                      setHistory(
-                        (Math.PI ** parseFloat(number1)).toFixed(2).toString()
-                      )
-                      setNumber1(
-                        (Math.PI ** parseFloat(number1)).toFixed(2).toString()
-                      )
+                      newNumber = parseFloat(number1) ** Math.PI
+                      setHistory(newNumber.toString())
+                      setNumber1(newNumber.toString())
                       break
                     default:
                       setNumber1(Math.PI.toString())
@@ -484,106 +493,98 @@ export default function Home() {
             <Pressable
               style={styles.padOperatorLeft}
               onPress={() => {
-                const test = Math.log2(parseFloat(number))
-                switch (operator) {
-                  case '+':
-                    if (isLog) {
-                      const total = test + parseFloat(number1)
-                      setHistory(total.toFixed(2).toString())
-                      setNumber1(total.toFixed(2).toString())
-                    } else {
-                      setHistory(
-                        (parseFloat(number) + parseFloat(number1))
-                          .toFixed(2)
-                          .toString()
-                      )
-                      setNumber1(
-                        (parseFloat(number) + parseFloat(number1))
-                          .toFixed(2)
-                          .toString()
-                      )
-                    }
-                    setNumber('')
-                    break
-                  case '*':
-                    if (isLog) {
-                      const total = test * parseFloat(number1)
-                      setHistory(total.toFixed(2).toString())
-                      setNumber1(total.toFixed(2).toString())
-                    } else {
-                      setHistory(
-                        (parseFloat(number) * parseFloat(number1))
-                          .toFixed(2)
-                          .toString()
-                      )
-                      setNumber1(
-                        (parseFloat(number) * parseFloat(number1))
-                          .toFixed(2)
-                          .toString()
-                      )
-                    }
-                    setNumber('')
-                    break
-                  case '-':
-                    if (isLog) {
-                      const total = parseFloat(number1) - test
-                      setHistory(total.toFixed(2).toString())
-                      setNumber1(total.toFixed(2).toString())
-                    } else {
-                      setHistory(
-                        (parseFloat(number) - parseFloat(number1))
-                          .toFixed(2)
-                          .toString()
-                      )
-                      setNumber1(
-                        (parseFloat(number) - parseFloat(number1))
-                          .toFixed(2)
-                          .toString()
-                      )
-                    }
-                    setNumber('')
-                    break
-                  case '/':
-                    if (isLog) {
-                      const total = test / parseFloat(number1)
-                      setHistory(total.toFixed(2).toString())
-                      setNumber1(total.toFixed(2).toString())
-                    } else {
-                      setHistory(
-                        (parseFloat(number) / parseFloat(number1))
-                          .toFixed(2)
-                          .toString()
-                      )
-                      setNumber1(
-                        (parseFloat(number) / parseFloat(number1))
-                          .toFixed(2)
-                          .toString()
-                      )
-                    }
-                    setNumber('')
-                    break
-                  case '^':
-                    if (isLog) {
-                      const total = test ** parseFloat(number1)
-                      setHistory(total.toFixed(2).toString())
-                      setNumber1(total.toFixed(2).toString())
-                    } else {
-                      console.log(1 ** 10)
-                      setHistory(
-                        (parseFloat(number1) ** parseFloat(number))
-                          .toFixed(2)
-                          .toString()
-                      )
-                      setNumber1(
-                        (parseFloat(number1) ** parseFloat(number))
-                          .toFixed(2)
-                          .toString()
-                      )
-                    }
-                    setNumber('')
-                    break
+                if (Number(number)) {
+                  const test = Math.log2(parseFloat(number))
+                  switch (operator) {
+                    case '+':
+                      if (isLog) {
+                        const total = test + parseFloat(number1)
+                        setHistory(total.toString())
+                        setNumber1(total.toString())
+                      } else {
+                        setHistory(
+                          (parseFloat(number) + parseFloat(number1)).toString()
+                        )
+                        setNumber1(
+                          (parseFloat(number) + parseFloat(number1)).toString()
+                        )
+                      }
+                      setNumber('')
+                      break
+                    case '*':
+                      if (isLog) {
+                        const total = test * parseFloat(number1)
+                        setHistory(total.toString())
+                        setNumber1(total.toString())
+                      } else {
+                        setHistory(
+                          (parseFloat(number) * parseFloat(number1)).toString()
+                        )
+                        setNumber1(
+                          (parseFloat(number) * parseFloat(number1)).toString()
+                        )
+                      }
+                      setNumber('')
+                      break
+                    case '-':
+                      if (isLog) {
+                        const total = parseFloat(number1) - test
+                        setHistory(total.toString())
+                        setNumber1(total.toString())
+                      } else {
+                        setHistory(
+                          (parseFloat(number1) - parseFloat(number)).toString()
+                        )
+                        setNumber1(
+                          (parseFloat(number1) - parseFloat(number)).toString()
+                        )
+                      }
+                      setNumber('')
+                      break
+                    case '÷':
+                      if (isLog) {
+                        const total = parseFloat(number1) / test
+                        setHistory(total.toString())
+                        setNumber1(total.toString())
+                      } else {
+                        setHistory(
+                          (parseFloat(number1) / parseFloat(number)).toString()
+                        )
+                        setNumber1(
+                          (parseFloat(number1) / parseFloat(number)).toString()
+                        )
+                      }
+                      setNumber('')
+                      break
+                    case '^':
+                      if (isLog) {
+                        const total = test ** parseFloat(number1)
+                        setHistory(total.toString())
+                        setNumber1(total.toString())
+                      } else {
+                        setHistory(
+                          (parseFloat(number1) ** parseFloat(number)).toString()
+                        )
+                        setNumber1(
+                          (parseFloat(number1) ** parseFloat(number)).toString()
+                        )
+                      }
+                      setNumber('')
+                      break
+                    case 'Log':
+                      if (Number.isNaN(test)) {
+                        setHistory('Infinito')
+                        setNumber1('')
+                      } else {
+                        setHistory(test.toString())
+                        setNumber1(test.toString())
+                        setNumber('')
+                      }
+                      break
+                  }
+                  setIsLog(false)
+                  setOperator('')
                 }
-                setIsLog(false)
               }}
             >
               <Text style={{ color: 'white' }}>=</Text>
